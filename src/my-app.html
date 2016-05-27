@@ -73,11 +73,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       <!-- Drawer content -->
       <app-drawer>
-        <app-toolbar>Menu</app-toolbar>
+        <app-toolbar>#Jangteo</app-toolbar>
         <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-          <a name="view1" href="/view1">View One</a>
-          <a name="view2" href="/view2">View Two</a>
-          <a name="view3" href="/view3">View Three</a>
+          <a name="main" href="/main">Home</a>
+          <a name="view2" href="#">Deals</a>
+          <a name="view3" href="#">wow</a>
+          <a name="new-view" href="/new-view">wowie!</a>
         </iron-selector>
       </app-drawer>
 
@@ -87,14 +88,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <app-header condenses reveals effects="waterfall">
           <app-toolbar>
             <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
-            <div title>My App</div>
+            <div title>[[pageHeader]]</div>
           </app-toolbar>
         </app-header>
 
         <iron-pages role="main" selected="[[page]]" attr-for-selected="name">
-          <my-view1 name="view1"></my-view1>
-          <my-view2 name="view2"></my-view2>
+          <main-page name="main"></main-page>
+          <!--<my-view2 name="view2"></my-view2>
           <my-view3 name="view3"></my-view3>
+          <my-new-view name="new-view"></my-new-view>-->
         </iron-pages>
 
       </app-header-layout>
@@ -109,12 +111,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       is: 'my-app',
 
+      pageHeaders: {
+        main: 'Home',
+      },
+
       properties: {
 
         page: {
           type: String,
           reflectToAttribute: true,
           observer: '_pageChanged'
+        },
+
+        pageHeader: {
+          type: String,
+          reflectToAttribute: true,
         },
 
       },
@@ -124,13 +135,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       ],
 
       _routePageChanged: function(page) {
-        this.page = page || 'view1';
+        this.page = page || 'main';
       },
 
       _pageChanged: function(page) {
         // load page import on demand.
+        this.pageHeader = this.pageHeaders[page];
         this.importHref(
-          this.resolveUrl('my-' + page + '.html'), null, null, true);
+          this.resolveUrl(page + '.html'), null, null, true);
       }
 
     });
