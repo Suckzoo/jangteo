@@ -9,6 +9,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="keyword-card.html">
 
 <dom-module id="main-page">
 
@@ -40,26 +41,62 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
       h1 {
         font-size: 22px;
-        margin: 16px 0;
+        margin: 24px;
         color: #212121;
       }
     </style>
 
-    <div class="card">
+    <!--<div class="card">
       <div class="circle">1</div>
       <h1>Home</h1>
       <p>Jangteo!
       <p>Jangteo project is just like an unicorn.</p>
       <p>Because it does not exist.</p>
-    </div>
+    </div>-->
+    <h1>최근 #[[keyword]]에 관한 딜</h1>
+    <template is="dom-repeat" items="{{deals}}">
+      <div class="card">
+        <keyword-card keyword="{{item.keyword}}"></keyword-card>
+      </div>
+    </template>
 
   </template>
 
   <script>
 
+    function retrieveRandomKeyword() {
+      return 'Overwatch' + (Math.floor(10 * Math.random()) + 1);
+    }
+
     Polymer({
 
-      is: 'main-page'
+      is: 'main-page',
+
+      //test-only!
+      ready: function(){
+        this.keyword = retrieveRandomKeyword();
+        //test-only!
+        this.deals = [
+          {keyword: 'gogeup1'},
+          {keyword: 'gogeup2'},
+          {keyword: 'gogeup3'},
+        ]
+      },
+
+      properties: {
+        keyword: {
+          type: String,
+          reflectToAttribute: true,
+        }
+      },
+
+      observers: [
+        '_keywordChanged(keyword)'
+      ],
+
+      _keywordChanged: function(keyword) {
+        this.keyword = keyword || retrieveRandomKeyword();
+      }
 
     });
 
